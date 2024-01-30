@@ -1,13 +1,53 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Find an escape</title>
+    <!--These should be all the stylesheets we need to use-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.19/dist/js/bulma-calendar.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.19/dist/css/bulma-calendar.min.css" rel="stylesheet">
+<!-- Bulma CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+
+<!-- Bulma Calendar CSS and JavaScript -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-calendar@0.10.0/dist/css/bulma-calendar.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/bulma-calendar@0.10.0/dist/js/bulma-calendar.min.js"></script>
+
+  </head>
+<html>
     <head>
         <meta charset="UTF-8" />
-        <title></title>
+        <title>Where do you want to go</title>
     </head>
     <body>
-        <ul>
-            <li>Item 1</li>
-            <l1>martin</l1>
-        </ul>
-    </body>
+        <!-- This is the calendar option. Need to figure bulma calendar-->
+        <h1>When do you want to go?</h1>
+        </body>
+        <div class="field">
+            <label class="label">Select a date</label>
+            <div class="control">
+              <input class="input datepicker" type="text" id="datepicker-example" placeholder="Select a date">
+            </div>
+          </div>
+          <script>
+            // Initialize Bulma Calendar
+            const datepicker = new BulmaCalendar("#datepicker-example", {
+              // Additional configuration options can be added here
+            });
+          </script>
+
+        <!-- This is the dropdown menu for the weather range. Should we use only the high temperaure?-->
+        <h2>What is your desired weather</h2>
+        <select id="weatherDropdown">
+            <option value="hot">Hot ( > 75 degrees)</option>
+            <option value="mild">Mild ( 55-75 degrees)</option>
+            <option value="cold">Cold (32-55 degrees)</option>
+            <option value="artic">Artic (under 32 degrees)</option>
+          </select>
+          <div name="information"></div>
+          <div name="local storage"></div>
+</html>
+        
 </html>
