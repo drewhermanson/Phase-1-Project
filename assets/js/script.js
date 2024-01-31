@@ -1,21 +1,14 @@
-// Define an array of places with their weather conditions
-const places = [
-    { name: "Beach Paradise", weather: "Hot" },
-    { name: "Mountain Retreat", weather: "Mild" },
-    { name: "Ski Resort", weather: "Cold" },
-    { name: "Tropical Island", weather: "Mild" },
-    // Add more places with weather descriptions
-];
+var resultsEl;
+var favHistoryBtnEl;
+var favHistoryEl;
+
+
+// Creates array of randomized index numbers
+
+// Fetches data based on user input
 
 // Function to find a place that matches the desired weather
-function findMatchingPlace(desiredWeather) {
-    for (const place of places) {
-        if (place.weather.toLowerCase() === desiredWeather.toLowerCase()) {
-            return place.name;
-        }
-    }
-    return null; // No matching place found
-}
+
 
 // Get user input for desired weather
 
@@ -26,9 +19,28 @@ function findMatchingPlace(desiredWeather) {
 // Find a place that matches the desired weather
 
 
-// Display the selected place
-if (selectedPlace !== null) {
-    console.log(`Recommended destination for ${desiredWeather} weather on ${desiredDays}: ${selectedPlace}`);
-} else {
-    console.log("Sorry, we couldn't find a destination matching your preferences.");
+// Display the search results on page
+
+function printSearchResults(resultObj){
+
+    //need an if statement in here to filter results!
+    for (var i = 0; i < resultObj.length; i++) {
+        var resultCardEl = document.createElement('div');
+        resultCardEl.classList.add('card');
+        var resultCardHeaderEl = document.createElement('div');
+        resultCardHeaderEl.classList.add('card-header');
+        //Add actual value for city name
+        resultCardHeaderEl.innerHTML = resultObj[i].name;
+        var resultCardContentEl = document.createElement('div');
+        resultCardContentEl.classList.add('card-content');
+        //Add actual values for weather
+        resultCardContentEl.innerHTML = 'High temp: ' + resultObj[i].high_temp + '</br> Humidity: ' + resultObj[i].humidity;
+        var favBtnEl = document.createElement('button');
+        favBtnEl.classList.add('button', 'is-info');
+
+    }
 }
+
+// Save favorited item to local storage
+
+//Get favorited items from local storage
