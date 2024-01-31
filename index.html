@@ -13,10 +13,10 @@
 <!-- This is the dropdown menu for the weather range. Should we use only the high temperaure?-->
 <h2>What is your desired weather</h2>
 <select id="weatherDropdown">
-    <option value="hot">Hot ( > 75 degrees)</option>
-    <option value="mild">Mild ( 55-75 degrees)</option>
-    <option value="cold">Cold (32-55 degrees)</option>
-    <option value="artic">Artic (under 32 degrees)</option>
+    <option temp-type="hot" value="hot">Hot ( > 75 degrees)</option>
+    <option temp-type="mild" value="mild">Mild ( 55-75 degrees)</option>
+    <option temp-type="cold" value="cold">Cold (32-55 degrees)</option>
+    <option temp-type="artic" value="artic">Artic (under 32 degrees)</option>
   </select>
 <!-- calendar -->
 <div class="container">
@@ -47,6 +47,15 @@
   </div>
 </div>
 
+<div>
+  <!--hey is placeholder class to call button in js-->
+  <button class="hey button is-info">Submit</button>
+</div>
+
+<div class = "results">
+
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/pikaday@1.8.0/pikaday.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pikaday-range@1.8.0/pikaday.range.min.js"></script>
 <script>
@@ -70,9 +79,11 @@
     });
 
     // Attach the range plugin to the start date picker
-    startDatePicker.range.end = endDatePicker;
+    // startDatePicker.range.end = endDatePicker;
   });
 </script>
+
+<script src="./assets/js/script.js"></script>
 
 </body>
 </html>
