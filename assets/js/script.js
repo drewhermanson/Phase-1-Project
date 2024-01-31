@@ -1,7 +1,7 @@
 var resultsEl;
 var favHistoryBtnEl;
 var favHistoryEl;
-
+var savedFavorites = [];
 
 // Creates array of randomized index numbers
 
@@ -31,16 +31,50 @@ function printSearchResults(resultObj){
         resultCardHeaderEl.classList.add('card-header');
         //Add actual value for city name
         resultCardHeaderEl.innerHTML = resultObj[i].name;
+        resultCardEl.append(resultCardHeaderEl);
         var resultCardContentEl = document.createElement('div');
         resultCardContentEl.classList.add('card-content');
         //Add actual values for weather
         resultCardContentEl.innerHTML = 'High temp: ' + resultObj[i].high_temp + '</br> Humidity: ' + resultObj[i].humidity;
         var favBtnEl = document.createElement('button');
         favBtnEl.classList.add('button', 'is-info');
+        resultCardContentEl.append(favBtnEl);
+        resultCardEl.append(resultCardContentEl);
+
+        resultsEl.append(resultCardEl);
 
     }
 }
 
-// Save favorited item to local storage
+//Read stored favorites
+function readStoredFavorites() {
+    var favorites = localStorage.getItem('savedPlaces');
+    if (favorites) {
+        savedFavorites = JSON.parse(favorites);
+    } else {
+        savedFavorites = [];
+    }
+}
 
-//Get favorited items from local storage
+// Save favorited item to local storage
+//Need to add a click listener for this
+ function saveSearchResult(event) {
+  var favoritedResults = readStoredFavorites();
+  //Update these to match the API values
+  var location = {
+    city: cityName,
+    lat: latitude,
+    lon: longitude,
+    temp: highTemp,
+    humidity: humidity
+  };
+  favoritedResults.push(location);
+  localStorage.setItem('savedPlaces', JSON.stringify(favoritedResults));
+ }
+
+
+//Get favorited items from local storage and display in modal
+
+function printSavedFavorites() {
+    var historyModalEl = document.createElement('div');
+}
