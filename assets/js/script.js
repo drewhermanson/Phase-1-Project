@@ -66,7 +66,9 @@ function readStoredFavorites() {
     lat: latitude,
     lon: longitude,
     temp: highTemp,
-    humidity: humidity
+    humidity: humidity, 
+    startDate: startDate,
+    endDate: endDate
   };
   favoritedResults.push(location);
   localStorage.setItem('savedPlaces', JSON.stringify(favoritedResults));
@@ -75,6 +77,30 @@ function readStoredFavorites() {
 
 //Get favorited items from local storage and display in modal
 
-function printSavedFavorites() {
-    var historyModalEl = document.createElement('div');
+function openSavedFavorites() {
+    //need the actual name of the modal & click listener for this function
+    favHistoryEl.classList.add('is-active')
+    printFavorites();
+}
+
+//Close modal with favorites history
+    // need the actual name of the modal & click listener for this function
+
+function closeSavedFavorites() {
+    favHistoryEl.classList.remove('is-active');
+    }
+
+//Print data in modal
+
+function printFavorites(){
+    //Double check this
+    if (savedFavorites) {
+        for (i = 0; i < savedFavorites.length; i++){
+            //Add empty UL in the modal HTML
+            var savedResult = document.createElement('li');
+            savedResult.innerHTML = '<b>' + savedFavorites[i].city + '</b>: ' + savedFavorites[i].startDate + ' to ' + savedFavorites[i].endDate + '(' + savedFavorites[i].temp + 'F, Humidity: ' + savedFavorites[i].humidity + ')';
+            favHistoryEl.append(savedResult);
+        }
+    }
+
 }
