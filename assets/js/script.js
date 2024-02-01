@@ -61,9 +61,11 @@ function getCityNames() {
     
         //Drew: array to temporarily hold the weather data
         var tempWeather = [];
+        
+
     
         //Drew:  fetchedPromises is an array of promises. .map function will iterate through the selectedCities array and create a new array of promises.
-        var fetchPromises = selectedCities.map(function(city) {
+        var fetchPromises = selectedCities.map(function(city, i) {
                 //Drew: will need to code user stated date ranges
                 var weatherApi = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + city + "/" + startDate + "/" + endDate + "?unitGroup=us&include=days&key=GQ2YDMGMHEHD89M9KEGLM5ZEW&contentType=json";
 
@@ -80,51 +82,57 @@ function getCityNames() {
                         })
                         .then(function(weather) {
                                 //Drew: adds the cities weather data to the tempWeather array
-                                tempWeather.push(weather.days[0].temp);
+                                var weatherObj = {
+                                        name: selectedCities[i],
+                                        tempstatus: "",
+                                        humidity: weather.days[0].humidity,
+                                        rainChance: weather.days[0].precipprob,
+                                        descrip: weather.days[0].description,
+                                        temp: weather.days.map(function(day) {
+                                                return day.temp;
+                                        }),
+                                };
+                                tempWeather.push(weatherObj);
                         })
                         .catch(function(error) {
                                 //Drew: logs the error message
                                 console.error(error);
                         });
         });
-    
+
         //Drew:  After all the fetches are done, it takes all the promises and pushes them to weatherEval.
         Promise.all(fetchPromises)
                 .then(function() {
                         console.log(tempWeather);
-                        weatherEval(tempWeather, selectedCities);
+                        weatherEval(tempWeather);
                 })
                 .catch(function(error) {
                         console.error(error);
                 });
-    }
-
+        }
 
 // Function to find a place that matches the desired weather
 //Drew: function that checks the temp and assigns a status to it. Also puts the information into an object and then into an array.
-function weatherEval(tempWeather, selectedCities) {
+function weatherEval(tempWeather) {
         //Drew: array of objects
         finishedCities = [];
     
-        for (var i = 0; i < selectedCities.length; i++) {
+        for (var i = 0; i < tempWeather.length; i++) {
                 //Drew: individiual object
-                var cityObj = {
-                        name: selectedCities[i],
-                        temp: tempWeather[i],
-                        tempstatus: ""
-                };
+
+
                 //Drew: checks the temp and assigns a status to it
-                if (cityObj.temp < 75 && cityObj.temp >= 55) {
-                        cityObj.tempstatus = "mild";
-                } else if (cityObj.temp >= 75) {
-                        cityObj.tempstatus = "hot";
-                } else if (cityObj.temp < 55 && cityObj.temp >= 32) {
-                        cityObj.tempstatus = "cold";
+                if (tempWeather[i].temp[0] < 75 && tempWeather[i].temp[0] >= 55) {
+                        tempWeather[i].tempstatus = "mild";
+                } else if (tempWeather[i].temp[0] >= 75) {
+                        tempWeather[i].tempstatus = "hot";
+                } else if (tempWeather[i].temp[0] < 55 && tempWeather[i].temp[0] >= 32) {
+                        tempWeather[i].tempstatus = "cold";
                 } else {
-                        cityObj.tempstatus = "arctic";
+                        tempWeather[i].tempstatus = "arctic";
                 }
                 //Drew: pushes the object into the array
-                finishedCities.push(cityObj);
+                finishedCities.push(tempWeather[i]);
     
                 //Drew: these console logs make it easy to check that data is reaching this point and being applied to the object without error.
                 //Drew: console.logs(finishedCities[i].name);
