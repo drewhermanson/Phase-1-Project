@@ -3,6 +3,7 @@ var submitButtonEl = document.querySelector(".hey");
 var dropDownEl = document.querySelector("#weatherDropdown")
 var starDateEl = document.querySelector("#startDate");
 var endDateEl = document.querySelector("#endDate");
+var cardAreaEl = document.querySelector('.card-column');
 var favHistoryBtnEl;
 var favHistoryEl;
 var savedFavorites = [];
@@ -210,32 +211,42 @@ function printSearchResults(resultObj){
         //resultObj.name .temp .tempstatus
 
         //check for if no results are found and then rerun the search if nothing is found. This will loop infinitely if no results are found.
-       
-       
+
 
                 for (var i = 0; i < resultObj.length; i++) {
+                        var cardColumnEl = document.createElement('div');
+                        cardColumnEl.classList.add('column', 'is-one-third');
                         var resultCardEl = document.createElement('div');
                         resultCardEl.classList.add('card');
                         var resultCardHeaderEl = document.createElement('div');
                         resultCardHeaderEl.classList.add('card-header');
                         //Add actual value for city name
-                        resultCardHeaderEl.innerHTML = resultObj[i].name;
+                        resultCardHeaderEl.innerHTML = '<h5 class="title is-5">' + resultObj[i].name + '</h5>';
                         resultCardEl.append(resultCardHeaderEl);
                         var resultCardContentEl = document.createElement('div');
                         resultCardContentEl.classList.add('card-content');
                         resultCardContentEl.innerHTML = "Temperature: " + resultObj[i].temp;
                         //Add actual values for weather
                         //resultCardContentEl.innerHTML = 'High temp: ' + resultObj[i].high_temp + '</br> Humidity: ' + resultObj[i].humidity;
+                        var cardFooterEl = document.createElement('footer');
+                        cardFooterEl.classList.add('card-footer');
                         var favBtnEl = document.createElement('button');
                         favBtnEl.classList.add('button', 'is-info');
-                        resultCardContentEl.append(favBtnEl);
+                        favBtnEl.innerHTML = '<i class="fa-solid fa-star"></i>';
+                        cardFooterEl.append(favBtnEl);
+                        resultCardContentEl.append(cardFooterEl);
                         resultCardEl.append(resultCardContentEl);
-
-                        resultsEl.append(resultCardEl);
+                        cardColumnEl.append(resultCardEl);
+                        cardAreaEl.append(cardColumnEl);
 
                         //we should make a button appear after the user has searched with some text saying "need more results"
-                }
+
+                
         
+
+              
+        }
+
 }
 
 //Read stored favorites
