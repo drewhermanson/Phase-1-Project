@@ -19,19 +19,20 @@
   </h1>
 </header>
 
-<div class = "userBar">
+<h2 class = "padding">What is your desired weather</h2>
+<div class = "dropDown padding">
   <!-- This is the dropdown menu for the weather range. Should we use only the high temperaure?-->
-  <h2>What is your desired weather</h2>
-  <select id="weatherDropdown barChild">
+  <select id="weatherDropdown">
       <option temp-type="hot" value="hot">Hot ( > 75 degrees)</option>
       <option temp-type="mild" value="mild">Mild ( 55-75 degrees)</option>
       <option temp-type="cold" value="cold">Cold (32-55 degrees)</option>
       <option temp-type="artic" value="artic">Artic (under 32 degrees)</option>
     </select>
+</div>
 
   <!-- calendar -->
-  <div class="container barChild">
-    <label class="label">Select a Date Range</label>
+  <div class="container">
+    <label class="label padding">Select a Date Range</label>
     <div class="field has-addons">
       <div class="control align">
         <input class="input" type="text" id="startDate" placeholder="Start Date">
@@ -56,14 +57,15 @@
         </a>
       </div>
     </div>
+  </div>
 
-    <div class = "barChild">
+    <div class = "padding">
       <!--hey is placeholder class to call button in js-->
       <button class="hey button is-info">Submit</button>
-      </div>
+    </div>
 
 
-</div>
+
 
 
 

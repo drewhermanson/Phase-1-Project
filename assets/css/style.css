@@ -1,0 +1,37 @@
+body{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    display:flex;
+    justify-content: center;
+}
+
+h2{
+    display: flex;
+    align-items: center;
+}
+
+.padding{
+    padding: 7px 7px;
+}
+
+.label {
+    display: flex;
+    justify-content: center
+}
+
+.align {
+    display: flex;
+    align-items: center;
+}
+
+.dropDown{
+    display: flex;
+    justify-content: center;
+}
+
+
