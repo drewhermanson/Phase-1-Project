@@ -68,7 +68,7 @@ function getCityNames() {
    
     
                 //Drew: will need to code user stated date ranges
-                var weatherApi = "https://api.weatherbit.io/v2.0/history/daily?&city=" + city + "&start_date=" + startDate + "&end_date=" + endDate + "&Units=I&key=fbfc79efc2f44cc5af0eb345b502e685";
+                var weatherApi = "https://api.weatherbit.io/v2.0/history/daily?&city=" + city + "&start_date=" + startDate + "&end_date=" + endDate + "&Units=I&key=6f251738284f43388d62e002e46361af";
     
                 //Drew: individual fetch for weather data
                 return fetch(weatherApi)
