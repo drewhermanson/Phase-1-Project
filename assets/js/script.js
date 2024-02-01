@@ -39,7 +39,7 @@ function getCityNames() {
         fetch(cityApi).then(function (response) {
                 if (response.ok) {
                         response.json().then(function (cities) {
-                                for (var i = 0; i < 10; i++) {
+                                for (var i = 0; i < 3; i++) {
                                         //Drew: selects the city name from the position in the array from the randomly generated city numbers array.
                                         selectedCities[i] = cities.data[cityCodes[i]].city;
                                         //Drew: checks and removes certain markings in the city data. Otherwise normal data is fine.
@@ -65,25 +65,27 @@ function getCityNames() {
     
         //Drew:  fetchedPromises is an array of promises. .map function will iterate through the selectedCities array and create a new array of promises.
         var fetchPromises = selectedCities.map(function(city) {
-   
-    
                 //Drew: will need to code user stated date ranges
-                var weatherApi = "https://api.weatherbit.io/v2.0/history/daily?&city=" + city + "&start_date=" + startDate + "&end_date=" + endDate + "&Units=I&key=6f251738284f43388d62e002e46361af";
-    
+                var weatherApi = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + city + "/" + startDate + "/" + endDate + "?unitGroup=us&include=days&key=GQ2YDMGMHEHD89M9KEGLM5ZEW&contentType=json";
+
                 //Drew: individual fetch for weather data
                 return fetch(weatherApi)
                         .then(function(response) {
                                 //Drew: checks for a positive response
                                 if (response.ok) {
                                         return response.json();
-                                //Drew: bad response results in an error message, but i(drew) did lots of tests and have never gotten this.
                                 } else {
-                                        throw new Error("Error fetching weather data for " + city);
+                                        //Drew: returns a rejected promise with the error message
+                                        return Promise.reject(new Error("Error fetching weather data for " + city));
                                 }
                         })
                         .then(function(weather) {
                                 //Drew: adds the cities weather data to the tempWeather array
-                                tempWeather.push(weather.data[0].temp);
+                                tempWeather.push(weather.days[0].temp);
+                        })
+                        .catch(function(error) {
+                                //Drew: logs the error message
+                                console.error(error);
                         });
         });
     
@@ -136,9 +138,11 @@ function weatherEval(tempWeather, selectedCities) {
 // Get user input for desired weather + date range
 var submitHandler = function (event) {
         event.preventDefault();
-
+        cityCodes.splice(0, cityCodes.length);
         //Drew: userTemp is the value of the selected option in the dropdown
         userTemp = dropDownEl.value; 
+
+
 
         if(starDateEl.value || endDateEl.value) {
         //Drew: Object to format the user inputted date
@@ -207,10 +211,7 @@ function printSearchResults(resultObj){
         //resultObj.name .temp .tempstatus
 
         //check for if no results are found and then rerun the search if nothing is found. This will loop infinitely if no results are found.
-        //if(!resultObj.length){
-                //getRandomCities();
-                //return;
-        //}else{
+
 
                 for (var i = 0; i < resultObj.length; i++) {
                         var cardColumnEl = document.createElement('div');
@@ -239,8 +240,13 @@ function printSearchResults(resultObj){
                         cardAreaEl.append(cardColumnEl);
 
                         //we should make a button appear after the user has searched with some text saying "need more results"
-               // }
+
+                
+        
+
+              
         }
+
 }
 
 //Read stored favorites
