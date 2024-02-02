@@ -12,6 +12,8 @@ var cityCodes = [];
 var selectedCities = [];
 //Drew: array of objects that CURRENTLY include city name, temp, and tempstatus(hot,cold,warm,etc)
 var finishedCities = [];
+//matchCities is the final variable of data that matches user input
+var matchedCities = [];
 //Drew: global variable for the user selected temperature
 var userTemp = "";
 var startDate = "";
@@ -88,9 +90,10 @@ function getCityNames() {
                                         humidity: weather.days[0].humidity,
                                         rainChance: weather.days[0].precipprob,
                                         descrip: weather.days[0].description,
-                                        temp: weather.days.map(function(day) {
-                                                return day.temp;
-                                        }),
+                                        temp:weather.days[0].temp
+                                        // temp: weather.days.map(function(day) {
+                                        //         return day.temp;
+                                        // }),
                                 };
                                 tempWeather.push(weatherObj);
                         })
@@ -122,11 +125,11 @@ function weatherEval(tempWeather) {
 
 
                 //Drew: checks the temp and assigns a status to it
-                if (tempWeather[i].temp[0] < 75 && tempWeather[i].temp[0] >= 55) {
+                if (tempWeather[i].temp < 75 && tempWeather[i].temp >= 55) {
                         tempWeather[i].tempstatus = "mild";
-                } else if (tempWeather[i].temp[0] >= 75) {
+                } else if (tempWeather[i].temp >= 75) {
                         tempWeather[i].tempstatus = "hot";
-                } else if (tempWeather[i].temp[0] < 55 && tempWeather[i].temp[0] >= 32) {
+                } else if (tempWeather[i].temp < 55 && tempWeather[i].temp >= 32) {
                         tempWeather[i].tempstatus = "cold";
                 } else {
                         tempWeather[i].tempstatus = "arctic";
@@ -193,7 +196,7 @@ var submitHandler = function (event) {
 // Find a place that matches the desired weather
 
 function matchPlace() {
-        var matchedCities = [];
+        
 
         //Drew: for loop to check the random cities temps against the user inputted temp. Puts cities that match into a new array.
         for (var i = 0; i < finishedCities.length; i++) {
@@ -218,9 +221,10 @@ function printSearchResults(resultObj){
         //resultObj.name .temp .tempstatus
 
         //check for if no results are found and then rerun the search if nothing is found. This will loop infinitely if no results are found.
-       
-       
+        if(resultObj.length === 0){
+                alert("No results found, please try again");
 
+        } else {
                 for (var i = 0; i < resultObj.length; i++) {
                         var resultCardEl = document.createElement('div');
                         resultCardEl.classList.add('card');
@@ -243,7 +247,7 @@ function printSearchResults(resultObj){
 
                         //we should make a button appear after the user has searched with some text saying "need more results"
                 }
-        
+        }  
 }
 
 //Read stored favorites
