@@ -31,10 +31,10 @@ Calendar
 https://github.com/Pikaday/Pikaday
 
 Banner image takes photos from:
-Photo by Abdullah Ghatasheh: https://www.pexels.com/photo/grayscale-photo-of-man-and-woman-1805562/ \r\n
-Photo by Johannes Plenio: https://www.pexels.com/photo/green-trees-1567058/ \r\n
-Photo by Lukas Kloeppel: https://www.pexels.com/photo/empire-state-building-new-york-466685/ \r\n
-Photo by Asad Photo Maldives: https://www.pexels.com/photo/green-trees-near-seashore-under-blue-sky-457878/ \r\n
+<br>Photo by Abdullah Ghatasheh: https://www.pexels.com/photo/grayscale-photo-of-man-and-woman-1805562/ </br>
+<br>Photo by Johannes Plenio: https://www.pexels.com/photo/green-trees-1567058/ </br>
+<br>Photo by Lukas Kloeppel: https://www.pexels.com/photo/empire-state-building-new-york-466685/ </br>
+<br>Photo by Asad Photo Maldives: https://www.pexels.com/photo/green-trees-near-seashore-under-blue-sky-457878/ </br>
 
 ## License 
 
