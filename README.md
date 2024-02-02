@@ -1,6 +1,6 @@
 # Find Your Escape
 
-## Description fsdafsda
+## Description 
 
 Tired of the same old vacations? Looking to get away? Find your escape allows the user to discover new vacation destinations from around the world.  After choosing vacation dates and weather conditions, Find Your Escape uses the data to come up with exciting new vacations. 
 
@@ -27,11 +27,14 @@ https://www.visualcrossing.com/resources/documentation/weather-api/timeline-weat
 
 Icons provided by [FontAwesome](https://fontawesome.com/).
 
+Calendar
+https://github.com/Pikaday/Pikaday
+
 Banner image takes photos from:
-Photo by Abdullah Ghatasheh: https://www.pexels.com/photo/grayscale-photo-of-man-and-woman-1805562/
-Photo by Johannes Plenio: https://www.pexels.com/photo/green-trees-1567058/
-Photo by Lukas Kloeppel: https://www.pexels.com/photo/empire-state-building-new-york-466685/
-Photo by Asad Photo Maldives: https://www.pexels.com/photo/green-trees-near-seashore-under-blue-sky-457878/
+Photo by Abdullah Ghatasheh: https://www.pexels.com/photo/grayscale-photo-of-man-and-woman-1805562/ \r\n
+Photo by Johannes Plenio: https://www.pexels.com/photo/green-trees-1567058/ \r\n
+Photo by Lukas Kloeppel: https://www.pexels.com/photo/empire-state-building-new-york-466685/ \r\n
+Photo by Asad Photo Maldives: https://www.pexels.com/photo/green-trees-near-seashore-under-blue-sky-457878/ \r\n
 
 ## License 
 
