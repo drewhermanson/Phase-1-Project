@@ -4,8 +4,10 @@ var dropDownEl = document.querySelector("#weatherDropdown")
 var starDateEl = document.querySelector("#startDate");
 var endDateEl = document.querySelector("#endDate");
 var cardAreaEl = document.querySelector('.card-column');
-var favHistoryBtnEl;
-var favHistoryEl;
+var favHistoryBtnEl = document.querySelector('.favorites');
+var favHistoryEl = document.getElementById('favorites-modal');
+var favHistoryContentEl = document.querySelector('.modal-fav-results');
+var closeFavHistoryBtnEl = document.querySelector('.close-favorites');
 var favBtnEl;
 var savedFavorites = [];
 //Drew: array for randomly generated city numbers
@@ -299,19 +301,22 @@ function openSavedFavorites() {
     // need the actual name of the modal & click listener for this function
 
 function closeSavedFavorites() {
+        favHistoryContentEl.innerHTML = "";
     favHistoryEl.classList.remove('is-active');
     }
 
 //Print data in modal
 
 function printFavorites(){
-    //Change savedFavorites to favorites
-    if (savedFavorites) {
-        for (i = 0; i < savedFavorites.length; i++){
+        var savedPlaces = localStorage.getItem('savedPlaces');
+        var favorites = JSON.parse(savedPlaces);
+    if (favorites) {
+        for (i = 0; i < favorites.length; i++){
             //Add empty UL in the modal HTML
-            var savedResult = document.createElement('li');
-            savedResult.innerHTML = '<b>' + savedFavorites[i].city + '</b>: ' + savedFavorites[i].startDate + ' to ' + savedFavorites[i].endDate + '(' + savedFavorites[i].temp + 'F, Humidity: ' + savedFavorites[i].humidity + ')';
-            favHistoryEl.append(savedResult);
+            var savedResult = document.createElement('div');
+            savedResult.setAttribute('id', 'saved-results');
+            savedResult.innerHTML = '<b>' + favorites[i].city + '</b>: ' + favorites[i].startDate + ' to ' + favorites[i].endDate ;
+            favHistoryContentEl.append(savedResult);
         }
     }
 
@@ -319,3 +324,5 @@ function printFavorites(){
 
 submitButtonEl.addEventListener('click', submitHandler);
 //favBtnEl.addEventListener('click', saveSearchResult);
+favHistoryBtnEl.addEventListener('click', openSavedFavorites);
+closeFavHistoryBtnEl.addEventListener('click', closeSavedFavorites);
