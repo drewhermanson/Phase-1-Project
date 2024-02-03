@@ -6,7 +6,7 @@ var endDateEl = document.querySelector("#endDate");
 var cardAreaEl = document.querySelector('.card-column');
 var favHistoryBtnEl = document.querySelector('.favorites');
 var favHistoryEl = document.getElementById('favorites-modal');
-var favHistoryContentEl = document.querySelector('.modal-box');
+var favHistoryContentEl = document.querySelector('.modal-fav-results');
 var closeFavHistoryBtnEl = document.querySelector('.close-favorites');
 var favBtnEl;
 var savedFavorites = [];
@@ -288,6 +288,7 @@ function openSavedFavorites() {
     // need the actual name of the modal & click listener for this function
 
 function closeSavedFavorites() {
+        favHistoryContentEl.innerHTML = "";
     favHistoryEl.classList.remove('is-active');
     }
 
@@ -300,6 +301,7 @@ function printFavorites(){
         for (i = 0; i < favorites.length; i++){
             //Add empty UL in the modal HTML
             var savedResult = document.createElement('div');
+            savedResult.setAttribute('id', 'saved-results');
             savedResult.innerHTML = '<b>' + favorites[i].city + '</b>: ' + favorites[i].startDate + ' to ' + favorites[i].endDate ;
             favHistoryContentEl.append(savedResult);
         }
