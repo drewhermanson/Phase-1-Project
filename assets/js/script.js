@@ -296,9 +296,6 @@ function closeSavedFavorites() {
 function printFavorites(){
         var savedPlaces = localStorage.getItem('savedPlaces');
         var favorites = JSON.parse(savedPlaces);
-        favHistoryContentEl.append('Test function');
-        console.log(favorites);
-        console.log(favorites[0].city);
     if (favorites) {
         for (i = 0; i < favorites.length; i++){
             //Add empty UL in the modal HTML
