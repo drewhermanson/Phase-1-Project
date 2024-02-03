@@ -221,20 +221,17 @@ function printSearchResults(resultObj){
                         resultCardEl.classList.add('card');
                         var resultCardHeaderEl = document.createElement('div');
                         resultCardHeaderEl.classList.add('card-header');
-                        //Add actual value for city name
                         resultCardHeaderEl.innerHTML = '<h5 class="title is-5">' + resultObj[i].name + '</h5>';
                         resultCardEl.append(resultCardHeaderEl);
                         var resultCardContentEl = document.createElement('div');
                         resultCardContentEl.classList.add('card-content');
                         resultCardContentEl.innerHTML = "Temperature: " + resultObj[i].temp;
-                        //Add actual values for weather
-                        //resultCardContentEl.innerHTML = 'High temp: ' + resultObj[i].high_temp + '</br> Humidity: ' + resultObj[i].humidity;
                         var cardFooterEl = document.createElement('footer');
                         cardFooterEl.classList.add('card-footer');
                         favBtnEl = document.createElement('button');
                         favBtnEl.classList.add('button', 'is-info', 'fav-button');
-                        //favBtnEl.setAttribute('data-index', i);
                         favBtnEl.setAttribute('city-name', resultObj[i].name);
+                        favBtnEl.setAttribute('alt', 'Add city to favorites');
                         favBtnEl.innerHTML = '<i class="fa-solid fa-star"></i>';
                         cardFooterEl.append(favBtnEl);
                         resultCardContentEl.append(cardFooterEl);
