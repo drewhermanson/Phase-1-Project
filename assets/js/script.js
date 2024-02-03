@@ -6,6 +6,7 @@ var endDateEl = document.querySelector("#endDate");
 var cardAreaEl = document.querySelector('.card-column');
 var favHistoryBtnEl;
 var favHistoryEl;
+var favBtnEl;
 var savedFavorites = [];
 //Drew: array for randomly generated city numbers
 var cityCodes = [];
@@ -233,59 +234,59 @@ function printSearchResults(resultObj){
                         resultCardEl.classList.add('card');
                         var resultCardHeaderEl = document.createElement('div');
                         resultCardHeaderEl.classList.add('card-header');
-                        //Add actual value for city name
                         resultCardHeaderEl.innerHTML = '<h5 class="title is-5">' + resultObj[i].name + '</h5>';
                         resultCardEl.append(resultCardHeaderEl);
                         var resultCardContentEl = document.createElement('div');
                         resultCardContentEl.classList.add('card-content');
                         resultCardContentEl.innerHTML = "Temperature: " + resultObj[i].temp;
-                        //Add actual values for weather
-                        //resultCardContentEl.innerHTML = 'High temp: ' + resultObj[i].high_temp + '</br> Humidity: ' + resultObj[i].humidity;
                         var cardFooterEl = document.createElement('footer');
                         cardFooterEl.classList.add('card-footer');
-                        var favBtnEl = document.createElement('button');
-                        favBtnEl.classList.add('button', 'is-info');
+                        favBtnEl = document.createElement('button');
+                        favBtnEl.classList.add('button', 'is-info', 'fav-button');
+                        favBtnEl.setAttribute('city-name', resultObj[i].name);
+                        favBtnEl.setAttribute('alt', 'Add city to favorites');
                         favBtnEl.innerHTML = '<i class="fa-solid fa-star"></i>';
                         cardFooterEl.append(favBtnEl);
                         resultCardContentEl.append(cardFooterEl);
                         resultCardEl.append(resultCardContentEl);
                         cardColumnEl.append(resultCardEl);
                         cardAreaEl.append(cardColumnEl);
+              
+                        favBtnEl.addEventListener('click', saveSearchResult);
 
-                        //we should make a button appear after the user has searched with some text saying "need more results"
-                }
+
         }  
 }
+
 
 //Read stored favorites
 function readStoredFavorites() {
     var favorites = localStorage.getItem('savedPlaces');
     if (favorites) {
-        savedFavorites = JSON.parse(favorites);
+        favorites = JSON.parse(favorites);
     } else {
-        savedFavorites = [];
+        favorites = [];
     }
+    return favorites
 }
 
 // Save favorited item to local storage
 //Need to add a click listener for this
  function saveSearchResult(event) {
-  var favoritedResults = readStoredFavorites();
+  //var favoritedResults = readStoredFavorites();
   //Update these to match the API values
+  //var locations = matchedCities;
   var location = {
-    city: cityName,
-    lat: latitude,
-    lon: longitude,
-    temp: highTemp,
-    humidity: humidity, 
+    city: this.getAttribute('city-name'),
     startDate: startDate,
     endDate: endDate
   };
+  var favoritedResults = readStoredFavorites();
   favoritedResults.push(location);
   localStorage.setItem('savedPlaces', JSON.stringify(favoritedResults));
  }
 
-
+//favBtnEl.addEventListener('click', saveSearchResult);
 //Get favorited items from local storage and display in modal
 
 function openSavedFavorites() {
@@ -304,7 +305,7 @@ function closeSavedFavorites() {
 //Print data in modal
 
 function printFavorites(){
-    //Double check this
+    //Change savedFavorites to favorites
     if (savedFavorites) {
         for (i = 0; i < savedFavorites.length; i++){
             //Add empty UL in the modal HTML
@@ -317,3 +318,4 @@ function printFavorites(){
 }
 
 submitButtonEl.addEventListener('click', submitHandler);
+//favBtnEl.addEventListener('click', saveSearchResult);
