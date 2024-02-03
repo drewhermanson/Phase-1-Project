@@ -6,6 +6,7 @@ var endDateEl = document.querySelector("#endDate");
 var cardAreaEl = document.querySelector('.card-column');
 var favHistoryBtnEl = document.querySelector('.favorites');
 var favHistoryEl = document.getElementById('favorites-modal');
+var favHistoryContentEl = document.querySelector('.modal-box');
 var closeFavHistoryBtnEl = document.querySelector('.close-favorites');
 var favBtnEl;
 var savedFavorites = [];
@@ -293,13 +294,17 @@ function closeSavedFavorites() {
 //Print data in modal
 
 function printFavorites(){
-    //Change savedFavorites to favorites
-    if (savedFavorites) {
-        for (i = 0; i < savedFavorites.length; i++){
+        var savedPlaces = localStorage.getItem('savedPlaces');
+        var favorites = JSON.parse(savedPlaces);
+        favHistoryContentEl.append('Test function');
+        console.log(favorites);
+        console.log(favorites[0].city);
+    if (favorites) {
+        for (i = 0; i < favorites.length; i++){
             //Add empty UL in the modal HTML
-            var savedResult = document.createElement('li');
-            savedResult.innerHTML = '<b>' + savedFavorites[i].city + '</b>: ' + savedFavorites[i].startDate + ' to ' + savedFavorites[i].endDate + '(' + savedFavorites[i].temp + 'F, Humidity: ' + savedFavorites[i].humidity + ')';
-            favHistoryEl.append(savedResult);
+            var savedResult = document.createElement('div');
+            savedResult.innerHTML = '<b>' + favorites[i].city + '</b>: ' + favorites[i].startDate + ' to ' + favorites[i].endDate ;
+            favHistoryContentEl.append(savedResult);
         }
     }
 
