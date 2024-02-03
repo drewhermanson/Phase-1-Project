@@ -238,7 +238,7 @@ function printSearchResults(resultObj){
                         resultCardEl.append(resultCardHeaderEl);
                         var resultCardContentEl = document.createElement('div');
                         resultCardContentEl.classList.add('card-content');
-                        resultCardContentEl.innerHTML = "Temperature: " + resultObj[i].temp;
+                        resultCardContentEl.innerHTML = "<b>Temperature:</b> " + resultObj[i].temp + '&#176;F </br><b>Humidity:</b> ' + resultObj[i].humidity + '% </br><b>Chance of Rain:</b> ' + resultObj[i].rainChance + '% </br><b>Weather Description:</b> ' + resultObj[i].descrip;
                         var cardFooterEl = document.createElement('footer');
                         cardFooterEl.classList.add('card-footer');
                         favBtnEl = document.createElement('button');
@@ -257,7 +257,7 @@ function printSearchResults(resultObj){
 
         }  
 }
-
+}
 
 //Read stored favorites
 function readStoredFavorites() {
