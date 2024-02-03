@@ -4,8 +4,9 @@ var dropDownEl = document.querySelector("#weatherDropdown")
 var starDateEl = document.querySelector("#startDate");
 var endDateEl = document.querySelector("#endDate");
 var cardAreaEl = document.querySelector('.card-column');
-var favHistoryBtnEl;
-var favHistoryEl;
+var favHistoryBtnEl = document.querySelector('.favorites');
+var favHistoryEl = document.getElementById('favorites-modal');
+var closeFavHistoryBtnEl = document.querySelector('.close-favorites');
 var favBtnEl;
 var savedFavorites = [];
 //Drew: array for randomly generated city numbers
@@ -306,3 +307,5 @@ function printFavorites(){
 
 submitButtonEl.addEventListener('click', submitHandler);
 //favBtnEl.addEventListener('click', saveSearchResult);
+favHistoryBtnEl.addEventListener('click', openSavedFavorites);
+closeFavHistoryBtnEl.addEventListener('click', closeSavedFavorites);
