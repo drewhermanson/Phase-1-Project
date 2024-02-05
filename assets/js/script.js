@@ -44,7 +44,7 @@ function getCityNames() {
         fetch(cityApi).then(function (response) {
                 if (response.ok) {
                         response.json().then(function (cities) {
-                                for (var i = 0; i < 3; i++) {
+                                for (var i = 0; i < 10; i++) {
                                         //Drew: selects the city name from the position in the array from the randomly generated city numbers array.
                                         selectedCities[i] = cities.data[cityCodes[i]].city;
                                         //Drew: checks and removes certain markings in the city data. Otherwise normal data is fine.
@@ -63,62 +63,86 @@ function getCityNames() {
     }
     
     //Drew: function to get weather data for all cities
-    function getWeatherData(selectedCities) {
-    
-        //Drew: array to temporarily hold the weather data
-        var tempWeather = [];
-        
+function getWeatherData(selectedCities) {
 
-    
-        //Drew:  fetchedPromises is an array of promises. .map function will iterate through the selectedCities array and create a new array of promises.
-        var fetchPromises = selectedCities.map(function(city, i) {
-                //Drew: will need to code user stated date ranges
-                var weatherApi = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + city + "/" + startDate + "/" + endDate + "?unitGroup=us&include=days&key=GQ2YDMGMHEHD89M9KEGLM5ZEW&contentType=json";
+//Drew: array to temporarily hold the weather data
+var tempWeather = [];
 
-                //Drew: individual fetch for weather data
-                return fetch(weatherApi)
-                        .then(function(response) {
-                                //Drew: checks for a positive response
-                                if (response.ok) {
-                                        return response.json();
-                                } else {
-                                        //Drew: returns a rejected promise with the error message
-                                        return Promise.reject(new Error("Error fetching weather data for " + city));
-                                }
-                        })
-                        .then(function(weather) {
-                                //Drew: adds the cities weather data to the tempWeather array
-                                var weatherObj = {
-                                        name: selectedCities[i],
-                                        tempstatus: "",
-                                        humidity: weather.days[0].humidity,
-                                        rainChance: weather.days[0].precipprob,
-                                        descrip: weather.days[0].description,
-                                        temp:weather.days[0].temp
-                                        // temp: weather.days.map(function(day) {
-                                        //         return day.temp;
-                                        // }),
-                                };
-                                tempWeather.push(weatherObj);
-                        })
-                        .catch(function(error) {
-                                //Drew: logs the error message
-                                console.error(error);
-                        });
-        });
+//Drew:  fetchedPromises is an array of promises. .map function will iterate through the selectedCities array and create a new array of promises.
+var fetchPromises = selectedCities.map(function(city, i) {
+        //Drew: will need to code user stated date ranges
+        var weatherApi = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + city + "/" + startDate + "/" + endDate + "?unitGroup=us&include=days&key=GQ2YDMGMHEHD89M9KEGLM5ZEW&contentType=json";
 
-        //Drew:  After all the fetches are done, it takes all the promises and pushes them to weatherEval.
-        Promise.all(fetchPromises)
-                .then(function() {
-                        console.log(tempWeather);
-                        weatherEval(tempWeather);
+        //Drew: individual fetch for weather data
+        return fetch(weatherApi)
+                .then(function(response) {
+                        //Drew: checks for a positive response
+                        if (response.ok) {
+                                return response.json();
+                        } else {
+                                //Drew: returns a rejected promise with the error message
+                                return Promise.reject(new Error("Error fetching weather data for " + city));
+                        }
+                })
+                .then(function(weather) {
+                        //Drew: adds the cities weather data to the tempWeather array
+                        var weatherObj = {
+                                name: selectedCities[i],
+                                tempstatus: "",
+                                //.map function is used to make each value an array within an object so it can be averaged later
+                                humidity: weather.days.map(function(day) {
+                                        return day.humidity;
+                                }),
+                                rainChance: weather.days.map(function(day) {
+                                        return day.precipprob;
+                                }),
+                                descrip: weather.days[0].description,
+                                temp: weather.days.map(function(day) {
+                                        return day.temp;
+                                })
+                        };
+                        //Drew: pushes the object into the tempWeather array
+                        tempWeather.push(weatherObj);
                 })
                 .catch(function(error) {
+                        //Drew: logs the error message
                         console.error(error);
                 });
-        }
+});
 
-// Function to find a place that matches the desired weather
+//Drew: After all the fetches are done, it takes all the promises and pushes them to weatherEval.
+Promise.all(fetchPromises)
+        .then(function() {
+                weatherAvg(tempWeather);
+        })
+        .catch(function(error) {
+                console.error(error);
+        });
+}
+//Drew: function to average the weather data
+function weatherAvg(tempWeather){
+
+        for(i = 0; i < tempWeather.length; i++){
+                //Drew: temp variable to hold the sum of all the temps
+                var temp = 0;
+                var humidity = 0;
+                var rainChance = 0;
+
+                //Drew: loop that adds all each days weather variable together
+                for(j = 0; j < tempWeather[i].temp.length; j++){
+                        temp += tempWeather[i].temp[j];
+                        humidity += tempWeather[i].humidity[j];
+                        rainChance += tempWeather[i].rainChance[j];
+                }
+                //Drew: divides the sum of the weather variables by the number of days to get the average and math round to get a whole number.
+                tempWeather[i].temp = Math.round(temp / tempWeather[i].temp.length);
+                tempWeather[i].humidity = Math.round(humidity / tempWeather[i].humidity.length);
+                tempWeather[i].rainChance = Math.round(rainChance / tempWeather[i].rainChance.length);
+        }
+        weatherEval(tempWeather);
+}
+
+
 //Drew: function that checks the temp and assigns a status to it. Also puts the information into an object and then into an array.
 function weatherEval(tempWeather) {
         //Drew: array of objects
@@ -150,58 +174,75 @@ function weatherEval(tempWeather) {
     }
 
 // Get user input for desired weather + date range
-var submitHandler = function (event) {
+var submitHandler = function(event){
         event.preventDefault();
         cityCodes.splice(0, cityCodes.length);
         //Drew: userTemp is the value of the selected option in the dropdown
         userTemp = dropDownEl.value; 
 
-
-
-        if(starDateEl.value || endDateEl.value) {
-        //Drew: Object to format the user inputted date
-        var months = {
-                Jan: "01",
-                Feb: "02",
-                Mar: "03",
-                Apr: "04",
-                May: "05",
-                Jun: "06",
-                Jul: "07",
-                Aug: "08",
-                Sep: "09",
-                Oct: "10",
-                Nov: "11",
-                Dec: "12"
-                };
-        //Drew:variable to format the user inputted date. Cuts off the day and then splits its apart by spaces.
+        //removes the Mon,Tues,etc from the date and splits it by spaces to rearrange for the api seach
         var tempStart = starDateEl.value.slice(4).split(" ");
-
-        //formats the date to YYY-MM-DD. Since we use historical data, we need to use 2023 as the year.
-        if(tempStart[2] === "2024"){
-                startDate = "2023" + "-" + months[tempStart[0]] + "-" + tempStart[1];
-        } else {
-                startDate = tempStart[2] + "-" + months[tempStart[0]] + "-" + tempStart[1];
-        }
         var tempEnd = endDateEl.value.slice(4).split(" ");
-        if(tempEnd[2] === "2024"){
-                endDate = "2023" + "-" + months[tempEnd[0]] + "-" + tempEnd[1];
-        } else {
-                endDate = tempEnd[2] + "-" + months[tempEnd[0]] + "-" + tempEnd[1];
-        }
-        getRandomCities();
-        } else {
-                alert("Please enter a date range");
-                return;
-        }
-};
 
+        //variables that use javascripts date function
+        var start = new Date(starDateEl.value);
+        var end = new Date(endDateEl.value);
+
+        //this gets the difference in days by milliseconds. Then you divide them by 1000 to get seconds, then 60 to get minutes, then 60 to get hours, then 24 to get days. Had to look this function up.
+        var daysDifference = Math.floor((end - start) / (1000 * 60 * 60 * 24));
+        
+
+        if(starDateEl.value && endDateEl.value) {
+                //if the date range is beyond 14 days it wont let you search
+                if (daysDifference > 14) {
+                                alert("Please enter a date range within 14 days");
+                                return;
+                        
+                } else {
+                        //Drew: Object to format the user inputted date
+                        var months = {
+                                Jan: "01",
+                                Feb: "02",
+                                Mar: "03",
+                                Apr: "04",
+                                May: "05",
+                                Jun: "06",
+                                Jul: "07",
+                                Aug: "08",
+                                Sep: "09",
+                                Oct: "10",
+                                Nov: "11",
+                                Dec: "12"
+                                };
+                        //Drew:variable to format the user inputted date. Cuts off the day and then splits its apart by spaces.
+                        
+                                
+                        //formats the date to YYY-MM-DD. Since we use historical data, we need to use 2023 as the year.
+                        //tempstart[x]: 2 = year YYYY, 0 = month MM, 1 = day DD
+                                if(tempStart[2] === "2024"){
+                                        startDate = "2023" + "-" + months[tempStart[0]] + "-" + tempStart[1];
+                                } else {
+                                        startDate = tempStart[2] + "-" + months[tempStart[0]] + "-" + tempStart[1];
+                                }
+                                
+                                if(tempEnd[2] === "2024"){
+                                        endDate = "2023" + "-" + months[tempEnd[0]] + "-" + tempEnd[1];
+                                } else {
+                                        endDate = tempEnd[2] + "-" + months[tempEnd[0]] + "-" + tempEnd[1];
+                                }
+                                
+                        }
+                getRandomCities();
+        } else {
+        //in case you hit the button without putting anything in. Nothing will run without dates.
+        alert("Please enter a date range");
+        return;
+        }
+}
 
 // Find a place that matches the desired weather
 
 function matchPlace() {
-        
-
         //Drew: for loop to check the random cities temps against the user inputted temp. Puts cities that match into a new array.
         for (var i = 0; i < finishedCities.length; i++) {
                 if (finishedCities[i].tempstatus === userTemp) {
@@ -216,10 +257,7 @@ function matchPlace() {
         printSearchResults(matchedCities);
 }
 
-//^will need to check user input vs results from weatherEval function
-
 // Display the search results on page
-
 function printSearchResults(resultObj){
         console.log(resultObj);
         //resultObj.name .temp .tempstatus
