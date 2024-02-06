@@ -18,7 +18,7 @@ This app can be used to identify potential vacation destinations based on vacati
 
 [Bulma](https://bulma.io/) is used under MIT license.
 
-[GetPostman API](https://documenter.getpostman.com/view/1134062/T1LJjU52#d5fa7209-3bf9-4a24-be50-94d84192b1a6).
+[GetPostman API](https://countriesnow.space/).
 
 Timeline Weather API
 https://www.visualcrossing.com/resources/documentation/weather-api/timeline-weather-api/
