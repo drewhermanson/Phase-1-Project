@@ -259,14 +259,19 @@ function matchPlace() {
 
 // Display the search results on page
 function printSearchResults(resultObj){
-        
-        //resultObj.name .temp .tempstatus
-
-        //check for if no results are found and then rerun the search if nothing is found. This will loop infinitely if no results are found.
+        var topLineResultEl = document.createElement('div');
+        //check for if no results are found and print message
         if(resultObj.length === 0){
-                alert("No results found, please try again");
+                //alert("No results found, please try again");
+                topLineResultEl.innerHTML = 'No results found, please try again'; 
+                topLineResultEl.classList.add('column', 'is-full');
+                cardAreaEl.append(topLineResultEl);
 
         } else {
+                var topLineResultEl = document.createElement('div');
+                topLineResultEl.innerHTML = 'Showing results for ' + startDate + ' to ' + endDate; 
+                topLineResultEl.classList.add('column', 'is-full');
+                cardAreaEl.append(topLineResultEl);
                 for (var i = 0; i < resultObj.length; i++) {
                         var cardColumnEl = document.createElement('div');
                         cardColumnEl.classList.add('column', 'is-one-third');
@@ -282,7 +287,7 @@ function printSearchResults(resultObj){
                         var cardFooterEl = document.createElement('footer');
                         cardFooterEl.classList.add('card-footer');
                         favBtnEl = document.createElement('button');
-                        favBtnEl.classList.add('button', 'is-info', 'fav-button');
+                        favBtnEl.classList.add('button', 'is-success', 'fav-button');
                         favBtnEl.setAttribute('city-name', resultObj[i].name);
                         favBtnEl.setAttribute('alt', 'Add city to favorites');
                         favBtnEl.innerHTML = '<i class="fa-solid fa-star"></i>';
@@ -311,12 +316,8 @@ function readStoredFavorites() {
 }
 
 // Save favorited item to local storage
-//Need to add a click listener for this
  function saveSearchResult(event) {
-  //var favoritedResults = readStoredFavorites();
-  //Update these to match the API values
-  //var locations = matchedCities;
-  var location = {
+    var location = {
     city: this.getAttribute('city-name'),
     startDate: startDate,
     endDate: endDate
@@ -326,17 +327,12 @@ function readStoredFavorites() {
   localStorage.setItem('savedPlaces', JSON.stringify(favoritedResults));
  }
 
-//favBtnEl.addEventListener('click', saveSearchResult);
-//Get favorited items from local storage and display in modal
 
+//Get favorited items from local storage and display in modal
 function openSavedFavorites() {
-    //need the actual name of the modal & click listener for this function
     favHistoryEl.classList.add('is-active')
     printFavorites();
 }
-
-//Close modal with favorites history
-    // need the actual name of the modal & click listener for this function
 
 function closeSavedFavorites() {
         favHistoryContentEl.innerHTML = "";
@@ -350,7 +346,6 @@ function printFavorites(){
         var favorites = JSON.parse(savedPlaces);
     if (favorites) {
         for (i = 0; i < favorites.length; i++){
-            //Add empty UL in the modal HTML
             var savedResult = document.createElement('div');
             savedResult.setAttribute('id', 'saved-results');
             savedResult.innerHTML = '<b>' + favorites[i].city + '</b>: ' + favorites[i].startDate + ' to ' + favorites[i].endDate ;
@@ -361,6 +356,5 @@ function printFavorites(){
 }
 
 submitButtonEl.addEventListener('click', submitHandler);
-//favBtnEl.addEventListener('click', saveSearchResult);
 favHistoryBtnEl.addEventListener('click', openSavedFavorites);
 closeFavHistoryBtnEl.addEventListener('click', closeSavedFavorites);
