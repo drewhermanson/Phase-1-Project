@@ -8,19 +8,17 @@ The user can interact with the search results by clicking a button in the card f
 
 [Find Your Escape: https://drewhermanson.github.io/Phase-1-Project/](https://drewhermanson.github.io/Phase-1-Project/)
 
-**Get PNG of Markup**
+![Demo-picture](assets/images/demo.png)
 
 ## Usage
 
 This app can be used to identify potential vacation destinations based on vacation dates and weather conditions set by the user. The app will return results to the user that meet their criteria. The user can then mark the locations they are interested in potentially visiting and retrieve those at a later time. 
- **Check this out**
-
 
 ## Credit
 
 [Bulma](https://bulma.io/) is used under MIT license.
 
-GetPostman API 
+[GetPostman API](https://documenter.getpostman.com/view/1134062/T1LJjU52#d5fa7209-3bf9-4a24-be50-94d84192b1a6).
 
 Timeline Weather API
 https://www.visualcrossing.com/resources/documentation/weather-api/timeline-weather-api/
