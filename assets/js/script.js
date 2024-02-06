@@ -22,6 +22,7 @@ var matchedCities = [];
 var userTemp = "";
 var startDate = "";
 var endDate = "";
+var tempWeather = [];
 
 // Creates array of randomized index numbers
 function getRandomCities() {  
@@ -66,7 +67,7 @@ function getCityNames() {
 function getWeatherData(selectedCities) {
 
 //Drew: array to temporarily hold the weather data
-var tempWeather = [];
+
 
 //Drew:  fetchedPromises is an array of promises. .map function will iterate through the selectedCities array and create a new array of promises.
 var fetchPromises = selectedCities.map(function(city, i) {
@@ -164,11 +165,6 @@ function weatherEval(tempWeather) {
                 }
                 //Drew: pushes the object into the array
                 finishedCities.push(tempWeather[i]);
-    
-                //Drew: these console logs make it easy to check that data is reaching this point and being applied to the object without error.
-                //Drew: console.logs(finishedCities[i].name);
-                //Drew: console.log(finishedCities[i].temp);
-                //Drew: console.logs(finishedCities[i].tempstatus);
         }
         matchPlace();
     }
@@ -177,6 +173,10 @@ function weatherEval(tempWeather) {
 var submitHandler = function(event){
         event.preventDefault();
         cityCodes.splice(0, cityCodes.length);
+        selectedCities.splice(0, selectedCities.length);
+        finishedCities.splice(0, finishedCities.length);
+        matchedCities.splice(0, matchedCities.length);
+        cardAreaEl.innerHTML = "";
         //Drew: userTemp is the value of the selected option in the dropdown
         userTemp = dropDownEl.value; 
 
@@ -259,7 +259,7 @@ function matchPlace() {
 
 // Display the search results on page
 function printSearchResults(resultObj){
-        console.log(resultObj);
+        
         //resultObj.name .temp .tempstatus
 
         //check for if no results are found and then rerun the search if nothing is found. This will loop infinitely if no results are found.
