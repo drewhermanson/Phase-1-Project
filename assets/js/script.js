@@ -1,4 +1,3 @@
-var resultsEl = document.querySelector(".results");
 var submitButtonEl = document.querySelector(".hey");
 var dropDownEl = document.querySelector("#weatherDropdown")
 var starDateEl = document.querySelector("#startDate");
@@ -10,7 +9,6 @@ var favHistoryContentEl = document.querySelector('.modal-fav-results');
 var closeFavHistoryBtnEl = document.querySelector('.close-favorites');
 var errorEl = document.querySelector('.error');
 var favBtnEl;
-var savedFavorites = [];
 //Drew: array for randomly generated city numbers
 var cityCodes = [];
 //Drew: array of city names from api using the randomly generated city numbers
@@ -254,14 +252,12 @@ function matchPlace() {
         printSearchResults(matchedCities);
 }
 
-// Display the search results on page
+// Display the search results on page or print error message if no results found
 function printSearchResults(resultObj){
-
         //check for if no results are found and then rerun the search if nothing is found. This will loop infinitely if no results are found.
         if(resultObj.length === 0){
                 errorEl.innerHTML = "No results found. Please try again.";
                 return;
-
         } else {
                 for (var i = 0; i < resultObj.length; i++) {
                         
@@ -296,7 +292,6 @@ function printSearchResults(resultObj){
 }
 }
 
-//Read stored favorites
 function readStoredFavorites() {
     var favorites = localStorage.getItem('savedPlaces');
     if (favorites) {
@@ -307,8 +302,6 @@ function readStoredFavorites() {
     return favorites
 }
 
-// Save favorited item to local storage
-//Need to add a click listener for this
  function saveSearchResult(event) {
   //var favoritedResults = readStoredFavorites();
   //Update these to match the API values
@@ -323,9 +316,8 @@ function readStoredFavorites() {
   localStorage.setItem('savedPlaces', JSON.stringify(favoritedResults));
  }
 
-//favBtnEl.addEventListener('click', saveSearchResult);
-//Get favorited items from local storage and display in modal
 
+//Functions to open and close the modal
 function openSavedFavorites() {
     //need the actual name of the modal & click listener for this function
     favHistoryEl.classList.add('is-active')
@@ -340,8 +332,7 @@ function closeSavedFavorites() {
     favHistoryEl.classList.remove('is-active');
     }
 
-//Print data in modal
-
+//Prints saved favorites from local storage to modal
 function printFavorites(){
         var savedPlaces = localStorage.getItem('savedPlaces');
         var favorites = JSON.parse(savedPlaces);
