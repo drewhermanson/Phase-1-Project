@@ -8,7 +8,7 @@ The user can interact with the search results by clicking a button in the card f
 
 [Find Your Escape: https://drewhermanson.github.io/Phase-1-Project/](https://drewhermanson.github.io/Phase-1-Project/)
 
-![Demo-picture](assets/images/demo.png)
+![Demo-picture](assets/images/demo.gif)
 
 ## Usage
 
