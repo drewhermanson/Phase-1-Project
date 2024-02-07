@@ -7,6 +7,7 @@ var favHistoryBtnEl = document.querySelector('.favorites');
 var favHistoryEl = document.getElementById('favorites-modal');
 var favHistoryContentEl = document.querySelector('.modal-fav-results');
 var closeFavHistoryBtnEl = document.querySelector('.close-favorites');
+var errorEl = document.querySelector('.error');
 var favBtnEl;
 //Drew: array for randomly generated city numbers
 var cityCodes = [];
@@ -33,7 +34,6 @@ function getRandomCities() {
         getCityNames();
 }
 
-// Fetches data based on user input
 //Drew: function to get city names from api using the randomly generated city numbers
 function getCityNames() {
 
@@ -61,15 +61,12 @@ function getCityNames() {
             });    
     }
     
-    //Drew: function to get weather data for all cities
+//Drew: function to get weather data for all cities
 function getWeatherData(selectedCities) {
-
-//Drew: array to temporarily hold the weather data
-
 
 //Drew:  fetchedPromises is an array of promises. .map function will iterate through the selectedCities array and create a new array of promises.
 var fetchPromises = selectedCities.map(function(city, i) {
-        //Drew: will need to code user stated date ranges
+        
         var weatherApi = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + city + "/" + startDate + "/" + endDate + "?unitGroup=us&include=days&key=GQ2YDMGMHEHD89M9KEGLM5ZEW&contentType=json";
 
         //Drew: individual fetch for weather data
@@ -79,7 +76,7 @@ var fetchPromises = selectedCities.map(function(city, i) {
                         if (response.ok) {
                                 return response.json();
                         } else {
-                                //Drew: returns a rejected promise with the error message
+                                //Drew: returns a rejected promise with the error message. But only in console. Mainly used to keep the function from breaking on a failed response.
                                 return Promise.reject(new Error("Error fetching weather data for " + city));
                         }
                 })
@@ -88,7 +85,7 @@ var fetchPromises = selectedCities.map(function(city, i) {
                         var weatherObj = {
                                 name: selectedCities[i],
                                 tempstatus: "",
-                                //.map function is used to make each value an array within an object so it can be averaged later
+                                //.map will essentially make a copy array of the weather data arrays
                                 humidity: weather.days.map(function(day) {
                                         return day.humidity;
                                 }),
@@ -104,7 +101,6 @@ var fetchPromises = selectedCities.map(function(city, i) {
                         tempWeather.push(weatherObj);
                 })
                 .catch(function(error) {
-                        //Drew: logs the error message
                         console.error(error);
                 });
 });
@@ -144,8 +140,6 @@ function weatherAvg(tempWeather){
 
 //Drew: function that checks the temp and assigns a status to it. Also puts the information into an object and then into an array.
 function weatherEval(tempWeather) {
-        //Drew: array of objects
-        finishedCities = [];
     
         for (var i = 0; i < tempWeather.length; i++) {
                 //Drew: individiual object
@@ -170,11 +164,14 @@ function weatherEval(tempWeather) {
 // Get user input for desired weather + date range
 var submitHandler = function(event){
         event.preventDefault();
+        //clears all previous values on click of the submit button
         cityCodes.splice(0, cityCodes.length);
         selectedCities.splice(0, selectedCities.length);
         finishedCities.splice(0, finishedCities.length);
         matchedCities.splice(0, matchedCities.length);
+        //removes previous content rendered to the page
         cardAreaEl.innerHTML = "";
+        errorEl.innerHTML = "";
         //Drew: userTemp is the value of the selected option in the dropdown
         userTemp = dropDownEl.value; 
 
@@ -193,8 +190,8 @@ var submitHandler = function(event){
         if(starDateEl.value && endDateEl.value) {
                 //if the date range is beyond 14 days it wont let you search
                 if (daysDifference > 14) {
-                                alert("Please enter a date range within 14 days");
-                                return;
+                        errorEl.innerHTML = "Date ranges must be within 14 days. Please try again.";
+                        return;
                         
                 } else {
                         //Drew: Object to format the user inputted date
@@ -233,7 +230,7 @@ var submitHandler = function(event){
                 getRandomCities();
         } else {
         //in case you hit the button without putting anything in. Nothing will run without dates.
-        alert("Please enter a date range");
+        errorEl.innerHTML = "Enter a date range to being a search.";
         return;
         }
 }
@@ -257,18 +254,13 @@ function matchPlace() {
 
 // Display the search results on page or print error message if no results found
 function printSearchResults(resultObj){
-        var topLineResultEl = document.createElement('div');
+        //check for if no results are found and then rerun the search if nothing is found. This will loop infinitely if no results are found.
         if(resultObj.length === 0){
-                topLineResultEl.innerHTML = 'No results found, please try again'; 
-                topLineResultEl.classList.add('column', 'is-full');
-                cardAreaEl.append(topLineResultEl);
-
+                errorEl.innerHTML = "No results found. Please try again.";
+                return;
         } else {
-                var topLineResultEl = document.createElement('div');
-                topLineResultEl.innerHTML = 'Showing results for ' + startDate + ' to ' + endDate; 
-                topLineResultEl.classList.add('column', 'is-full');
-                cardAreaEl.append(topLineResultEl);
                 for (var i = 0; i < resultObj.length; i++) {
+                        
                         var cardColumnEl = document.createElement('div');
                         cardColumnEl.classList.add('column', 'is-one-third');
                         var resultCardEl = document.createElement('div');
@@ -283,7 +275,7 @@ function printSearchResults(resultObj){
                         var cardFooterEl = document.createElement('footer');
                         cardFooterEl.classList.add('card-footer');
                         favBtnEl = document.createElement('button');
-                        favBtnEl.classList.add('button', 'is-success', 'fav-button');
+                        favBtnEl.classList.add('button', 'is-info', 'fav-button');
                         favBtnEl.setAttribute('city-name', resultObj[i].name);
                         favBtnEl.setAttribute('alt', 'Add city to favorites');
                         favBtnEl.innerHTML = '<i class="fa-solid fa-star"></i>';
@@ -311,7 +303,10 @@ function readStoredFavorites() {
 }
 
  function saveSearchResult(event) {
-    var location = {
+  //var favoritedResults = readStoredFavorites();
+  //Update these to match the API values
+  //var locations = matchedCities;
+  var location = {
     city: this.getAttribute('city-name'),
     startDate: startDate,
     endDate: endDate
@@ -321,11 +316,16 @@ function readStoredFavorites() {
   localStorage.setItem('savedPlaces', JSON.stringify(favoritedResults));
  }
 
+
 //Functions to open and close the modal
 function openSavedFavorites() {
+    //need the actual name of the modal & click listener for this function
     favHistoryEl.classList.add('is-active')
     printFavorites();
 }
+
+//Close modal with favorites history
+    // need the actual name of the modal & click listener for this function
 
 function closeSavedFavorites() {
         favHistoryContentEl.innerHTML = "";
@@ -338,6 +338,7 @@ function printFavorites(){
         var favorites = JSON.parse(savedPlaces);
     if (favorites) {
         for (i = 0; i < favorites.length; i++){
+            //Add empty UL in the modal HTML
             var savedResult = document.createElement('div');
             savedResult.setAttribute('id', 'saved-results');
             savedResult.innerHTML = '<b>' + favorites[i].city + '</b>: ' + favorites[i].startDate + ' to ' + favorites[i].endDate ;
@@ -348,5 +349,6 @@ function printFavorites(){
 }
 
 submitButtonEl.addEventListener('click', submitHandler);
+//favBtnEl.addEventListener('click', saveSearchResult);
 favHistoryBtnEl.addEventListener('click', openSavedFavorites);
 closeFavHistoryBtnEl.addEventListener('click', closeSavedFavorites);
