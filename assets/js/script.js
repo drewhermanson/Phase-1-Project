@@ -1,4 +1,3 @@
-var resultsEl = document.querySelector(".results");
 var submitButtonEl = document.querySelector(".hey");
 var dropDownEl = document.querySelector("#weatherDropdown")
 var starDateEl = document.querySelector("#startDate");
@@ -9,7 +8,6 @@ var favHistoryEl = document.getElementById('favorites-modal');
 var favHistoryContentEl = document.querySelector('.modal-fav-results');
 var closeFavHistoryBtnEl = document.querySelector('.close-favorites');
 var favBtnEl;
-var savedFavorites = [];
 //Drew: array for randomly generated city numbers
 var cityCodes = [];
 //Drew: array of city names from api using the randomly generated city numbers
@@ -257,12 +255,10 @@ function matchPlace() {
         printSearchResults(matchedCities);
 }
 
-// Display the search results on page
+// Display the search results on page or print error message if no results found
 function printSearchResults(resultObj){
         var topLineResultEl = document.createElement('div');
-        //check for if no results are found and print message
         if(resultObj.length === 0){
-                //alert("No results found, please try again");
                 topLineResultEl.innerHTML = 'No results found, please try again'; 
                 topLineResultEl.classList.add('column', 'is-full');
                 cardAreaEl.append(topLineResultEl);
@@ -304,7 +300,6 @@ function printSearchResults(resultObj){
 }
 }
 
-//Read stored favorites
 function readStoredFavorites() {
     var favorites = localStorage.getItem('savedPlaces');
     if (favorites) {
@@ -315,7 +310,6 @@ function readStoredFavorites() {
     return favorites
 }
 
-// Save favorited item to local storage
  function saveSearchResult(event) {
     var location = {
     city: this.getAttribute('city-name'),
@@ -327,8 +321,7 @@ function readStoredFavorites() {
   localStorage.setItem('savedPlaces', JSON.stringify(favoritedResults));
  }
 
-
-//Get favorited items from local storage and display in modal
+//Functions to open and close the modal
 function openSavedFavorites() {
     favHistoryEl.classList.add('is-active')
     printFavorites();
@@ -339,8 +332,7 @@ function closeSavedFavorites() {
     favHistoryEl.classList.remove('is-active');
     }
 
-//Print data in modal
-
+//Prints saved favorites from local storage to modal
 function printFavorites(){
         var savedPlaces = localStorage.getItem('savedPlaces');
         var favorites = JSON.parse(savedPlaces);
